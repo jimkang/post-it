@@ -8,7 +8,7 @@ test: clean-test-archive
 	node tests/integration/post-it-tests.js
 
 pushall:
-	git push origin master && npm publish
+	git push origin master && npm publish --access=public
 
 prettier:
 	prettier --single-quote --write "**/*.js"

@@ -1,5 +1,5 @@
 {
-  "name": "post-it",
+  "name": "@jimkang/post-it",
   "version": "1.0.0",
   "description": "An abstraction mostly for my projects that posts to multiple targets in one call.",
   "main": "index.js",
