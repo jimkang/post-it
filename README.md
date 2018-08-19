@@ -12,12 +12,12 @@ Currently posts to:
 Installation
 ------------
 
-    npm install post-it
+    npm install @jimkang/post-it
 
 Usage
 -----
 
-    var postIt = require('post-it');
+    var postIt = require('@jimkang/post-it');
 
 		postIt({
       id: 'hay-8000000',
