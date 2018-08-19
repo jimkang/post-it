@@ -28,6 +28,8 @@
     "call-next-tick": "^2.0.1",
     "mastodon": "^1.2.2",
     "post-image-to-twitter": "^1.0.1",
+    "request": "^2.88.0",
+    "standard-bail": "^2.0.1",
     "static-web-archive": "^3.1.1",
     "twit": "^2.2.11"
   }

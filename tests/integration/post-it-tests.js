@@ -38,7 +38,7 @@ var testCases = [
     name: 'Image',
     opts: {
       id: 'hay-8000000',
-      text: 'OHAY GUYS here is a pic',
+      text: 'OHAY GUYS here is a pic' + ~~(Math.random() * 100),
       altText: 'OHAY GUYS here is a pic',
       mediaFilename: 'hay-8000000.jpg',
       buffer: fs.readFileSync(__dirname + '/../fixtures/smidgeo_headshot.jpg', {
@@ -68,9 +68,7 @@ var testCases = [
   }
 ];
 
-testCases
-.slice(0, 1)
-.forEach(runTestCase);
+testCases.forEach(runTestCase);
 
 function runTestCase(testCase) {
   test(testCase.name, runTest);

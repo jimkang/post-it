@@ -3,7 +3,9 @@ var Twit = require('twit');
 var Mastodon = require('mastodon');
 var callNextTick = require('call-next-tick');
 var queue = require('d3-queue').queue;
-var postImage = require('post-image-to-twitter');
+var postImageToTwitter = require('post-image-to-twitter');
+var postImageToMastodon = require('./post-image-to-mastodon');
+var curry = require('lodash.curry');
 
 var postFunctionsForTargets = {
   archive: postToArchive,
@@ -59,47 +61,50 @@ function postToArchive(
 }
 
 function postToTwitter({ text, buffer, altText, config }, done) {
-  postToTwitterOrMastodon(
-    { twitLike: new Twit(config), endpoint: 'statuses/update', text, buffer, altText },
-    done
-  );
-}
-
-function postToMastodon({ text, buffer, altText, config }, done) {
-  postToTwitterOrMastodon(
-    { twitLike: new Mastodon(config), endpoint: 'statuses', text, buffer, altText },
-    done
-  );
-}
-
-function postToTwitterOrMastodon({ twitLike, endpoint, text, buffer, altText }, done) {
+  var twit = new Twit(config);
   if (buffer && buffer.length > 0) {
-    let postImageOpts = {
-      twit: twitLike,
+    let postImageToTwitterOpts = {
+      twit,
       base64Image: buffer.toString('base64'),
       altText,
       caption: text
     };
-
-    postImage(postImageOpts, wrapUp);
+    postImageToTwitter(postImageToTwitterOpts, curry(wrapUp)(done));
   } else {
-    debugger;
-    twitLike.post(endpoint, { status: text }, wrapUp);
+    twit.post('statuses/update', { status: text }, curry(wrapUp)(done));
   }
+}
 
-  function wrapUp(error, data) {
-    debugger;
-    if (error) {
-      if (data) {
-        console.error('Error posting to Mastodon or Twitter. Data:', data);
-      }
-      done(error);
+function postToMastodon(
+  { text, buffer, mediaFilename, altText, config },
+  done
+) {
+  var twit = new Mastodon(config);
+  if (buffer && buffer.length > 0) {
+    let postImageOpts = {
+      config,
+      buffer,
+      altText,
+      mediaFilename,
+      caption: text
+    };
+    postImageToMastodon(postImageOpts, curry(wrapUp)(done));
+  } else {
+    twit.post('statuses', { status: text }, curry(wrapUp)(done));
+  }
+}
+
+function wrapUp(done, error, data) {
+  if (error) {
+    if (data) {
+      console.error('Error posting to Mastodon or Twitter. Data:', data);
+    }
+    done(error);
+  } else {
+    if (data) {
+      done(null, data);
     } else {
-      if (data) {
-        done(null, data);
-      } else {
-        done(null, { message: 'Post to Twitter or Mastodon completed.' });
-      }
+      done(null, { message: 'Post to Twitter or Mastodon completed.' });
     }
   }
 }
