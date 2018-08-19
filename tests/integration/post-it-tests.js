@@ -11,7 +11,7 @@ var testCases = [
     name: 'Just text',
     opts: {
       id: 'hay-0',
-      text: 'OHAY GUYS',
+      text: 'OHAY GUYS ' + ~~(Math.random() * 100),
       targets: [
         {
           type: 'archive',
@@ -68,7 +68,9 @@ var testCases = [
   }
 ];
 
-testCases.forEach(runTestCase);
+testCases
+.slice(0, 1)
+.forEach(runTestCase);
 
 function runTestCase(testCase) {
   test(testCase.name, runTest);

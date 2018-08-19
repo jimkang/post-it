@@ -60,29 +60,35 @@ function postToArchive(
 
 function postToTwitter({ text, buffer, altText, config }, done) {
   postToTwitterOrMastodon(
-    { twitLike: new Twit(config), text, buffer, altText },
+    { twitLike: new Twit(config), endpoint: 'statuses/update', text, buffer, altText },
     done
   );
 }
 
 function postToMastodon({ text, buffer, altText, config }, done) {
   postToTwitterOrMastodon(
-    { twitLike: new Mastodon(config), text, buffer, altText },
+    { twitLike: new Mastodon(config), endpoint: 'statuses', text, buffer, altText },
     done
   );
 }
 
-function postToTwitterOrMastodon({ twitLike, text, buffer, altText }, done) {
-  var postImageOpts = {
-    twit: twitLike,
-    base64Image: buffer.toString('base64'),
-    altText,
-    caption: text
-  };
+function postToTwitterOrMastodon({ twitLike, endpoint, text, buffer, altText }, done) {
+  if (buffer && buffer.length > 0) {
+    let postImageOpts = {
+      twit: twitLike,
+      base64Image: buffer.toString('base64'),
+      altText,
+      caption: text
+    };
 
-  postImage(postImageOpts, wrapUp);
+    postImage(postImageOpts, wrapUp);
+  } else {
+    debugger;
+    twitLike.post(endpoint, { status: text }, wrapUp);
+  }
 
-  function wrapUp(error, placeholder, data) {
+  function wrapUp(error, data) {
+    debugger;
     if (error) {
       if (data) {
         console.error('Error posting to Mastodon or Twitter. Data:', data);

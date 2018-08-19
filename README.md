@@ -71,10 +71,10 @@ Create a test-config.js in the project root like this:
 				access_token_secret: 'your stuff'
 			},
 			mastodon: {
-				consumer_key: 'your stuff',
-				consumer_secret: 'your stuff',
-				access_token: 'your stuff'
-			},
+				access_token: 'your stuff',
+				api_url: 'https://botsin.space/api/v1/',
+				timeout_ms: 60 * 1000
+			}
 		}
 
 Then, run:
