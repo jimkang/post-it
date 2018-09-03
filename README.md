@@ -19,7 +19,7 @@ Usage
 
     var postIt = require('@jimkang/post-it');
 
-		postIt({
+    postIt({
       id: 'hay-8000000',
       text: 'OHAY GUYS here is a pic',
       altText: 'OHAY GUYS here is a pic',
@@ -39,47 +39,71 @@ Usage
         {
           type: 'twitter',
           config: {
-						consumer_key: 'something',
-						consumer_secret: 'something',
-						access_token: 'something',
-						access_token_secret: 'something'
-					}
+            consumer_key: 'something',
+            consumer_secret: 'something',
+            access_token: 'something',
+            access_token_secret: 'something'
+          }
         },
         {
           type: 'mastodon',
           config: {
-						consumer_key: 'something',
-						consumer_secret: 'something',
-						access_token: 'something'
-					}
+            consumer_key: 'something',
+            consumer_secret: 'something',
+            access_token: 'something'
+          }
         }
       ]
     },
-		handleError
-	);
+    handleError
+  );
+
+If you want to post text that only goes to a specific target instead of all of them, include a `text` param under that target. e.g.
+
+    postIt({
+      id: 'hay-8000000',
+      text: 'OHAY GUYS here is a pic',
+      altText: 'OHAY GUYS here is a pic',
+      mediaFilename: 'hay-8000000.jpg',
+      buffer: fs.readFileSync(__dirname + '/../fixtures/smidgeo_headshot.jpg', { encoding: null }),
+      targets: [
+        {
+          type: 'archive',
+          text: 'OHAY GUYS this text only goes to the archive, not to Mastodon or Twitter!',
+          config: {
+            title: 'Test archive',
+            homeLink: 'https://smidgeo.com/test',
+            rootPath: __dirname + '/../test-archive/',
+            maxEntriesPerPage: 25,
+            generateRSS: true
+          },
+        },
+        {
+          type: 'twitter',
+          ... 
 
 Tests
 -----
 
 Create a test-config.js in the project root like this:
 
-		module.exports = {
-			twitter: {
-				consumer_key: 'your stuff',
-				consumer_secret: 'your stuff',
-				access_token: 'your stuff-NPnDDaC4dcAxXxpJK2rkJW8EUmjUN1i',
-				access_token_secret: 'your stuff'
-			},
-			mastodon: {
-				access_token: 'your stuff',
-				api_url: 'https://botsin.space/api/v1/',
-				timeout_ms: 60 * 1000
-			}
-		}
+    module.exports = {
+      twitter: {
+        consumer_key: 'your stuff',
+        consumer_secret: 'your stuff',
+        access_token: 'your stuff-NPnDDaC4dcAxXxpJK2rkJW8EUmjUN1i',
+        access_token_secret: 'your stuff'
+      },
+      mastodon: {
+        access_token: 'your stuff',
+        api_url: 'https://botsin.space/api/v1/',
+        timeout_ms: 60 * 1000
+      }
+    }
 
 Then, run:
 
-		make test
+    make test
 
 Finally, go look at tests/test-archive to see if the archive HTML is there and the Twitter and Mastodon accounts to see if the posts are there.
 

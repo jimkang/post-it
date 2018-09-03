@@ -28,7 +28,7 @@ function postIt({ id, text, buffer, mediaFilename, altText, targets }, done) {
     if (postFn) {
       q.defer(postFn, {
         id,
-        text,
+        text: target.text || text,
         buffer,
         mediaFilename,
         altText,

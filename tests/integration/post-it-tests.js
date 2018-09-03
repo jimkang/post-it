@@ -65,6 +65,35 @@ var testCases = [
         }
       ]
     }
+  },
+  {
+    name: 'target-specific text',
+    opts: {
+      id: 'hay-01',
+      text: 'OHAY GUYS ' + ~~(Math.random() * 100),
+      targets: [
+        {
+          type: 'archive',
+          text:
+            '<dl><dt>OHAY GUYS</dt><dd>' + ~~(Math.random() * 100) + '</dd>',
+          config: {
+            title: 'Test archive',
+            homeLink: 'https://smidgeo.com/test',
+            rootPath: __dirname + '/../test-archive/',
+            maxEntriesPerPage: 25,
+            generateRSS: true
+          }
+        },
+        {
+          type: 'twitter',
+          config: config.twitter
+        },
+        {
+          type: 'mastodon',
+          config: config.mastodon
+        }
+      ]
+    }
   }
 ];
 
