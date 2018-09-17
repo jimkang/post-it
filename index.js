@@ -6,11 +6,14 @@ var queue = require('d3-queue').queue;
 var postImageToTwitter = require('post-image-to-twitter');
 var postImageToMastodon = require('./post-image-to-mastodon');
 var curry = require('lodash.curry');
+var request = require('request');
+var bodyMover = require('request-body-mover');
 
 var postFunctionsForTargets = {
   archive: postToArchive,
   mastodon: postToMastodon,
-  twitter: postToTwitter
+  twitter: postToTwitter,
+  noteTaker: postToNoteTaker
 };
 
 function postIt({ id, text, buffer, mediaFilename, altText, targets }, done) {
@@ -107,6 +110,53 @@ function wrapUp(done, error, data) {
       done(null, { message: 'Post to Twitter or Mastodon completed.' });
     }
   }
+}
+
+function postToNoteTaker(
+  { config, mediaFilename, buffer, altText, caption },
+  allDone
+) {
+  var reqOpts = {
+    url: config.noteTakerURL,
+    method: 'POST',
+    headers: {
+      Authorization: `Key ${config.token}`,
+      'X-Note-Archive': config.archive
+    }
+  };
+
+  if (buffer && buffer.length > 0) {
+    let formData = {
+      mediaFilename,
+      buffer: {
+        value: buffer,
+        options: {
+          filename: mediaFilename
+        }
+      },
+      altText
+    };
+    if (caption) {
+      formData.caption = caption;
+    }
+    if (mediaFilename.endsWith('.mp4')) {
+      formData.isVideo = true;
+      formData.buffer.options.contentType = 'video/mp4';
+    } else {
+      if (mediaFilename.endsWith('.jpg')) {
+        formData.buffer.options.contentType = 'image/jpeg';
+      } else {
+        // TODO: Other image types and file extensions, if necessary.
+        formData.buffer.options.contentType = 'image/png';
+      }
+    }
+    console.log('formData', formData);
+    reqOpts.formData = formData;
+  } else {
+    reqOpts.json = true;
+    reqOpts.body = caption;
+  }
+  request(reqOpts, bodyMover(allDone));
 }
 
 module.exports = postIt;

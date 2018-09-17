@@ -94,6 +94,42 @@ var testCases = [
         }
       ]
     }
+  },
+  {
+    name: 'note-taker',
+    opts: {
+      id: 'hay-8000000',
+      text: 'OHAY GUYS here is a pic' + ~~(Math.random() * 100),
+      altText: 'OHAY GUYS here is a pic',
+      mediaFilename: 'hay-8000000.jpg',
+      buffer: fs.readFileSync(__dirname + '/../fixtures/smidgeo_headshot.jpg', {
+        encoding: null
+      }),
+      targets: [
+        {
+          type: 'noteTaker',
+          config: config.noteTaker
+        },
+        {
+          type: 'archive',
+          config: {
+            title: 'Test archive',
+            homeLink: 'https://smidgeo.com/test',
+            rootPath: __dirname + '/../test-archive/',
+            maxEntriesPerPage: 25,
+            generateRSS: true
+          }
+        },
+        {
+          type: 'twitter',
+          config: config.twitter
+        },
+        {
+          type: 'mastodon',
+          config: config.mastodon
+        }
+      ]
+    }
   }
 ];
 
