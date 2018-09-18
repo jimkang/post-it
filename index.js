@@ -113,7 +113,7 @@ function wrapUp(done, error, data) {
 }
 
 function postToNoteTaker(
-  { config, mediaFilename, buffer, altText, caption },
+  { text, config, mediaFilename, buffer, altText },
   allDone
 ) {
   var reqOpts = {
@@ -136,8 +136,8 @@ function postToNoteTaker(
       },
       altText
     };
-    if (caption) {
-      formData.caption = caption;
+    if (text) {
+      formData.caption = text;
     }
     if (mediaFilename.endsWith('.mp4')) {
       formData.isVideo = true;
@@ -154,7 +154,7 @@ function postToNoteTaker(
     reqOpts.formData = formData;
   } else {
     reqOpts.json = true;
-    reqOpts.body = caption;
+    reqOpts.body = { caption: text };
   }
   request(reqOpts, bodyMover(allDone));
 }

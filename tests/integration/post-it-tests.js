@@ -130,6 +130,18 @@ var testCases = [
         }
       ]
     }
+  },
+  {
+    name: 'note-taker text only',
+    opts: {
+      text: 'OHAY GUYS ' + ~~(Math.random() * 100),
+      targets: [
+        {
+          type: 'noteTaker',
+          config: config.noteTaker
+        }
+      ]
+    }
   }
 ];
 
