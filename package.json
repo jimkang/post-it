@@ -31,7 +31,7 @@
     "request": "^2.88.0",
     "request-body-mover": "^1.0.1",
     "standard-bail": "^2.0.1",
-    "static-web-archive": "^3.1.1",
+    "static-web-archive": "^4.0.5",
     "twit": "^2.2.11"
   }
 }
