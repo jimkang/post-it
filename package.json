@@ -22,7 +22,7 @@
   "devDependencies": {
     "assert-no-error": "^1.0.0",
     "longjohn": "^0.2.12",
-    "tape": "^4.8.0"
+    "tape": "^5.0.1"
   },
   "dependencies": {
     "@jimkang/static-web-archive": "^5.0.0",
