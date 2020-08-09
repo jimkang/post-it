@@ -25,7 +25,7 @@
     "tape": "^4.8.0"
   },
   "dependencies": {
-    "@jimkang/static-web-archive": "^4.0.7",
+    "@jimkang/static-web-archive": "^5.0.0",
     "call-next-tick": "^2.0.1",
     "mastodon": "^1.2.2",
     "post-image-to-twitter": "^1.0.1",
